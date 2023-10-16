@@ -68,7 +68,7 @@ for branch in $branches; do
     cp "arch/arm64/boot/Image" "${KZIP}/Image"
     cd "$KZIP"
     zip -r "KernelSU_${TAG}-${kversion}.zip" ./
-    tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}" || tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}" || exit 1
+    tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || exit 1
     rm -f Image "KernelSU_${TAG}-${kversion}.zip"
     cd $HOME
 done
