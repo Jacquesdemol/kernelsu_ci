@@ -26,7 +26,6 @@ jobs:
         current_latest_tag=$(cat latest_tag)
         if [ "$latest_tag" == "$current_latest_tag" ]; then
           echo "No need to build new kernels"
-          exit 1
         else
           echo "$latest_tag" > latest_tag
           git add latest_tag
