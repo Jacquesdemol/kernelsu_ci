@@ -13,8 +13,8 @@ KZIP="$(pwd)/Kernel"
 cd ~
 mkdir kernel; cd kernel
 git config --global color.ui true
-git config --global user.name Gabriel2392
-git config --global user.email gabriel824m@gmail.com
+git config --global user.name henriqueiury5
+git config --global user.email henriqueiury5m@gmail.com
 
 function tg_sendFile() {
 		curl -s "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
@@ -38,7 +38,7 @@ n='
 tg_sendText "Starting KernelSU CI Builds ($TAG)"
 today=$(date +%y%m%d)
 
-branches=$(curl -s "https://api.github.com/repos/Gabriel2392/android_kernel_samsung_a33x/branches" | jq -r '.[].name')
+branches=$(curl -s "https://api.github.com/repos/Gabriel2392/android_kernel_samsung_a53x/branches" | jq -r '.[].name')
 
 HOME="$(pwd)"
 git clone https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r416183b "$HOME/clang-r416183b" --depth=1
