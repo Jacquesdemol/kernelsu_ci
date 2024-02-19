@@ -48,4 +48,4 @@ jobs:
         echo "Installing python..."
         sudo apt-get install python3 python2 -y &>/dev/null ||  sudo apt-get install python3 -y &>/dev/null || sudo apt-get install python -y &>/dev/null || true
         chmod 0755 kernel.sh
-        ./kernel.sh "${{ secrets.BOT_TOKEN }}" "${{ secrets.CHAT_ID }}"
+        ./kernel.sh
