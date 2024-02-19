@@ -1,11 +1,9 @@
 #!/bin/bash
 
-TG_TOKEN=$1
-TG_CHAT=$2
 TAG="$(curl -s https://api.github.com/repos/tiann/KernelSU/releases/latest | jq -r '.tag_name')"
 
-if [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ] || [ -z "$TAG" ]; then
-    echo "Vars are not setup properly!"
+if [ -z "$TAG" ]; then
+    echo "Vars are not set up properly!"
     exit 1
 fi
 
@@ -16,26 +14,9 @@ git config --global color.ui true
 git config --global user.name henriqueiury5
 git config --global user.email henriqueiury5m@gmail.com
 
-function tg_sendFile() {
-		curl -s "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-		-F parse_mode=markdown \
-		-F chat_id=$TG_CHAT \
-		-F document=@${1} \
-		-F "caption=${2}"
-}
+n=''
 
-function tg_sendText() {
-	curl -s "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
-		-d "parse_mode=html" \
-		-d text="${1}" \
-		-d chat_id=$TG_CHAT \
-		-d "disable_web_page_preview=true"
-}
-
-n='
-'
-
-tg_sendText "Starting KernelSU CI Builds ($TAG)"
+echo "Starting KernelSU CI Builds ($TAG)"
 today=$(date +%y%m%d)
 
 branches=$(curl -s "https://api.github.com/repos/Gabriel2392/android_kernel_samsung_a53x_xy/branches" | jq -r '.[].name')
@@ -55,7 +36,6 @@ export LLVM=1 LLVM_IAS=1
 export ARCH=arm64
 EXTRA_FLAGS="LOCALVERSION=-KernelSU-${TAG}"
 
-
 for branch in $branches; do
     rm -rf src
     git clone https://github.com/Gabriel2392/android_kernel_samsung_a53x_xy -b $branch --depth=1 src || continue
@@ -68,7 +48,8 @@ for branch in $branches; do
     cp "arch/arm64/boot/Image" "${KZIP}/Image"
     cd "$KZIP"
     zip -r "KernelSU_${TAG}-${kversion}.zip" ./
-    tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || exit 1
+    # Remove the following line, as it sends the file to Telegram
+    # tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || exit 1
     rm -f Image "KernelSU_${TAG}-${kversion}.zip"
     cd $HOME
 done
