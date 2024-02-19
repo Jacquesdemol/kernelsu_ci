@@ -51,5 +51,11 @@ for branch in $branches; do
     # Remove the following line, as it sends the file to Telegram
     # tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || tg_sendFile "KernelSU_${TAG}-${kversion}.zip" "KernelSU version: ${TAG}${n}Kernel version: ${kversion}${n}Branch: ${branch}" || exit 1
     rm -f Image "KernelSU_${TAG}-${kversion}.zip"
-    cd $HOME
+    cd "$KZIP"
+
+# Adicione este bloco para criar uma release no GitHub
+gh release create "v${TAG}-${kversion}" "${TAG}-${kversion}.zip" -t "Release v${TAG}-${kversion}" -n "Release Notes for v${TAG}-${kversion}" -R "Jacquesdemol/kernelsu_ci"
+
+# Limpar arquivo temporário
+rm -f "${TAG}-${kversion}.zip"
 done
